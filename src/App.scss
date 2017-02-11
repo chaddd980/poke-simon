@@ -1,33 +1,52 @@
 $header-margin: 1vw;
-$back-color: grey;
+$back-color: green;
+$height: 50vw;
+$poke-height: 8vw;
 
 .pic {
-  height: 180px;
-  width: 180px;
+  height: $poke-height;
+  width: $poke-height;
 }
 
 .App {
-  background-color: $back-color;
-  text-align: center;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.header {
+  display: flex;
+  // text-align: center;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.main-div {
+  background-image: url('http://thecraftchop.com/files/others/Pokeball.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-radius: 50%;
+  height: $height;
+  width: $height;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
 }
 
-.App-intro {
-  font-size: large;
+.pokemon {
+  display: flex;
+  align-self: center;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.filler {
+  height: 4vw;
+}
+
+
+.middle-pokemon {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
 }
