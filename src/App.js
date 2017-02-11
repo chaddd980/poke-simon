@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.min.css';
 import squirt from '../squirt.mp3';
 import bulb from '../bulb.mp3';
 import char from '../char.mp3';
@@ -29,7 +28,7 @@ class Pokemon extends Component {
   render() {
     return (
       <div className="footer">
-        <div onClick={() => this.playCry()}><img className="pic" src={this.props.pokemon}/></div>
+        <div onClick={() => this.playCry()}><img className="pic" src={this.props.pokemon} alt="pic of pokemon"/></div>
       </div>
     )
   }

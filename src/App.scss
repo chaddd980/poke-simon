@@ -1,9 +1,13 @@
+$header-margin: 1vw;
+$back-color: grey;
+
 .pic {
   height: 180px;
   width: 180px;
 }
 
 .App {
+  background-color: $back-color;
   text-align: center;
 }
 
