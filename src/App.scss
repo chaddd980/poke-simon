@@ -1,7 +1,10 @@
 $header-margin: 1vw;
-$back-color: green;
+$back-color: blue;
 $height: 50vw;
 $poke-height: 8vw;
+$count-color: white;
+$count-size: 4vw;
+$on-background: red;
 
 .pic {
   height: $poke-height;
@@ -10,22 +13,32 @@ $poke-height: 8vw;
 
 .App {
   display: flex;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
   flex-direction: column;
   align-items: center;
-  // justify-content: center;
 }
 
 .header {
   display: flex;
-  // text-align: center;
+  flex-shrink: 0;
 }
 
-.main-div {
+.count {
+  display: flex;
+  align-self: center;
+  color: $count-color;
+  padding-left: 1.6vw;
+  padding-top: 1.8vw;
+  font-weight: bold;
+  font-size: $count-size;
+}
+
+.pokeball {
   background-image: url('http://thecraftchop.com/files/others/Pokeball.svg');
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
+  background-position: center;
   border-radius: 50%;
   height: $height;
   width: $height;
@@ -33,12 +46,15 @@ $poke-height: 8vw;
   flex-direction: column;
   align-content: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .pokemon {
-  display: flex;
+  display: relative;
   align-self: center;
 }
+
+// @media screen and (min-width:)
 
 .filler {
   height: 4vw;
@@ -49,4 +65,35 @@ $poke-height: 8vw;
   width: 100%;
   display: flex;
   justify-content: space-around;
+}
+
+.current-pokemon {
+  background-color: $back-color;
+}
+
+
+.Button {
+  border: 2px solid black;
+  height: 2vw;
+  width: 4vw;
+}
+
+.on {
+  background: linear-gradient(90deg, red 50%, white 50%);
+  margin: 0 2vw;
+}
+
+.off {
+    background: linear-gradient(90deg, white 50%, black 50%);
+    margin: 0 2vw;
+}
+
+.onOff {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.controlHeader {
+  text-align: center;
 }
