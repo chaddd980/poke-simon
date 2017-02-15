@@ -49,6 +49,14 @@ $on-background: red;
   flex-shrink: 0;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
+// .visible {
+//   visibility: visible;
+// }
+
 .pokemon {
   display: relative;
   align-self: center;

@@ -4,6 +4,7 @@ import squirt from '../squirt.mp3';
 import bulb from '../bulb.mp3';
 import char from '../char.mp3';
 import pika from './pikachu.mp3';
+import error from '../error.wav'
 
 class App extends Component {
   constructor(props) {
@@ -24,7 +25,8 @@ class App extends Component {
     soundOn: false,
     soundCount: 0,
     userSelectionCount: [],
-    userChoices: []
+    userChoices: [],
+    errorClass: "hidden"
 
   }
 }
@@ -45,7 +47,7 @@ class App extends Component {
     if(this.state.on === false) {
       this.addPokemon()
     } else {
-      this.setState({on: false, name: "off", randomSound: [], score: 0});
+      this.setState({on: false, name: "off", randomSound: [], score: 0, errorClass: "hidden", keys: []});
     }
   }
 
@@ -145,6 +147,18 @@ class App extends Component {
     })
   }
 
+  addErrorMessage() {
+    this.setState({
+      errorClass: "visible"
+    })
+  }
+
+  removeErrorMessage() {
+    this.setState({
+      errorClass: "hidden"
+    })
+  }
+
   handleClickStrict() {
     if(this.state.strict === false) {
       this.setState({strict: true, strictName: "strict on switch"});
@@ -157,7 +171,8 @@ class App extends Component {
       <div className="App">
         <Header />
         <Controls name={this.state.name} handleClick={() => this.handleClick()} handleClickStrict={() => this.handleClickStrict()} strict={this.state.strictName} />
-        <Pokeball removeFromUserChoices={this.removeFromUserChoices.bind(this)} removeAllUserChoices={this.removeAllUserChoices.bind(this)} addToUserChoices={this.addToUserChoices.bind(this)} score={this.state.score} count={this.state.count} addCount={this.addCount.bind(this)} addPokemonSelection={this.addPokemonSelection.bind(this)} pokemonOrder={this.state.keys} on={this.state.on} randomSound={this.state.randomSound}/>
+        <Pokeball removeErrorMessage={this.removeErrorMessage.bind(this)} addErrorMessage={this.addErrorMessage.bind(this)} removeFromUserChoices={this.removeFromUserChoices.bind(this)} removeAllUserChoices={this.removeAllUserChoices.bind(this)} addToUserChoices={this.addToUserChoices.bind(this)} score={this.state.score} count={this.state.count} addCount={this.addCount.bind(this)} addPokemonSelection={this.addPokemonSelection.bind(this)} pokemonOrder={this.state.keys} on={this.state.on} randomSound={this.state.randomSound}/>
+        <div className={this.state.errorClass}>That was not the correct pokemon! Try that selection again.</div>
       </div>
     );
   }
@@ -244,15 +259,15 @@ class Pokeball extends Component {
   render() {
     return (
       <div className="pokeball">
-        <Pokemon addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[0]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798282/007Squirtle_XY_anime_jdl1ze.png" audio={this.state.audio} sound={squirt}  />
+        <Pokemon removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[0]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798282/007Squirtle_XY_anime_jdl1ze.png" audio={this.state.audio} sound={squirt}  />
         <div className="filler"></div>
         <div className="middle-pokemon">
-          <Pokemon addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[3]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798266/001Bulbasaur_Dream_rsskjs.png" audio={this.state.audio} sound={bulb} />
+          <Pokemon removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[3]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798266/001Bulbasaur_Dream_rsskjs.png" audio={this.state.audio} sound={bulb} />
           <div className="count">{this.props.score}</div>
-          <Pokemon addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[1]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798273/004Charmander_OS_anime_rotmth.png" audio={this.state.audio} sound={char} />
+          <Pokemon removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[1]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798273/004Charmander_OS_anime_rotmth.png" audio={this.state.audio} sound={char} />
         </div>
         <div className="filler"></div>
-        <Pokemon addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[2]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798367/025Pikachu_XY_anime_3_zvg897.png" audio={this.state.audio} sound={pika} />
+        <Pokemon removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[2]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798367/025Pikachu_XY_anime_3_zvg897.png" audio={this.state.audio} sound={pika} />
       </div>
     )
   }
@@ -272,18 +287,20 @@ class Pokemon extends Component {
   }
 
   playError() {
-    this.props.audio.src = this.props.sound
+    this.props.audio.src = error
     this.props.audio.play()
   }
 
   handleClick() {
     // this.props.removeAllUserChoices()
     if(this.props.userChoices < this.props.pokemonOrder && this.props.pokemonOrder[this.props.count] === this.props.name) {
+      this.props.removeErrorMessage()
       this.playCry()
       this.props.addToUserChoices(this.props.name)
       this.props.addCount()
       this.props.addPokemonSelection()
     } else if(this.props.userChoices < this.props.pokemonOrder && this.props.pokemonOrder[this.props.count] !== this.props.name) {
+      this.props.addErrorMessage()
       this.playError()
     }
     // if(this.props.userChoices.length === this.props.pokemonOrder.length) {
