@@ -82,7 +82,7 @@ class App extends Component {
   winnerCheck() {
     var self = this
     setTimeout(function() {
-      if(self.state.score === 2) {
+      if(self.state.score === 20) {
         self.setState({win: true, on: false, name: "off", randomSound: [], score: 0, errorClass: "hidden", keys: []}, () => {alert("YOU WIN!!!")})
       }
     }, 1000)
