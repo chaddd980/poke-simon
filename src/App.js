@@ -103,7 +103,7 @@ class App extends Component {
       if (this.state.soundOn) {
         setTimeout(function() {
           self.cry(i)
-        }, 1300*i)
+        }, 1000 + (1000*i))
       } else {
         this.cry(i)
         this.setState({
