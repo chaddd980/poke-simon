@@ -49,20 +49,30 @@ $on-background: red;
   flex-shrink: 0;
 }
 
+@media screen and (max-width: 600px) {
+  .pokeball {
+    height: $height + 25;
+    width: $height + 25;
+  }
+  .pic {
+    height: $poke-height + 5;
+    width: $poke-height + 5;
+  }
+}
+
 .hidden {
   visibility: hidden;
 }
 
-// .visible {
-//   visibility: visible;
-// }
+.error {
+  text-align: center;
+}
 
 .pokemon {
   display: relative;
   align-self: center;
 }
 
-// @media screen and (min-width:)
 
 .filler {
   height: 4vw;

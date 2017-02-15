@@ -26,8 +26,8 @@ class App extends Component {
     soundCount: 0,
     userSelectionCount: [],
     userChoices: [],
-    errorClass: "hidden",
-    strictClass: "hidden",
+    errorClass: "hidden error",
+    strictClass: "hidden error",
     win: false,
     current: "current-pokemon"
 
@@ -143,25 +143,25 @@ class App extends Component {
 
   addErrorMessage() {
     this.setState({
-      errorClass: "visible"
+      errorClass: "visible error"
     })
   }
 
   removeErrorMessage() {
     this.setState({
-      errorClass: "hidden"
+      errorClass: "hidden error"
     })
   }
 
   addStrictError() {
     this.setState({
-      strictClass: "visible"
+      strictClass: "visible error"
     })
   }
 
   removeStrictError() {
     this.setState({
-      strictClass: "hidden"
+      strictClass: "hidden error"
     })
   }
 
