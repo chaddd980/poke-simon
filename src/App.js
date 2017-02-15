@@ -27,7 +27,8 @@ class App extends Component {
     userSelectionCount: [],
     userChoices: [],
     errorClass: "hidden",
-    win: false
+    win: false,
+    current: "current-pokemon"
 
   }
 }
@@ -209,10 +210,10 @@ class Controls extends Component {
 class Switch extends Component {
 	render() {
 		return (
-      <div className="onOff"><p>ON</p>
+      <div className="onOff"><p>OFF</p>
   			<div className={this.props.name}>
-          <div onClick={this.props.handleClick} className="Button"></div>
-  			</div><p>OFF</p>
+          <div style={{cursor:'pointer'}} onClick={this.props.handleClick} className="Button"></div>
+  			</div><p>ON</p>
       </div>
 		)
 	}
@@ -280,7 +281,7 @@ class Pokemon extends Component {
   render() {
     return (
       <div className={this.state.class}>
-        <div onClick={() => this.handleClick()}><img className="pic" src={this.props.pokemon} alt="pic of pokemon"/></div>
+        <div style={{cursor:'pointer'}} onClick={() => this.handleClick()}><img className="pic" src={this.props.pokemon} alt="pic of pokemon"/></div>
       </div>
     )
   }

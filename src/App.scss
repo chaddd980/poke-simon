@@ -87,12 +87,12 @@ $on-background: red;
 }
 
 .on {
-  background: linear-gradient(90deg, red 50%, white 50%);
+  background: linear-gradient(90deg, white 50%, red 50%);
   margin: 0 2vw;
 }
 
 .off {
-    background: linear-gradient(90deg, white 50%, black 50%);
+    background: linear-gradient(90deg, black 50%, white 50%);
     margin: 0 2vw;
 }
 
