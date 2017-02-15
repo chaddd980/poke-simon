@@ -15,8 +15,8 @@ $TopPadding: 1.8vw;
 }
 
 .App {
-  font-family: 'Chewy', cursive;  
-  background-image: url("http://res.cloudinary.com/dk5ge9sgn/image/upload/v1487166112/pokemon-background_xjjgtc.jpg");
+  font-family: 'Chewy', cursive;
+  background-image: url("http://wallpapercraft.net/wp-content/uploads/2016/10/8-Bit-HD-Backgrounds.png");
   background-size: cover;
   display: flex;
   min-height: 100%;
@@ -62,6 +62,10 @@ $TopPadding: 1.8vw;
   .pic {
     height: $poke-height + 5;
     width: $poke-height + 5;
+  }
+  .App {
+    background-image: url("http://res.cloudinary.com/dk5ge9sgn/image/upload/v1487166112/pokemon-background_xjjgtc.jpg");
+    background-size: cover;
   }
 }
 
