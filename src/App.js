@@ -26,23 +26,11 @@ class App extends Component {
     soundCount: 0,
     userSelectionCount: [],
     userChoices: [],
-    errorClass: "hidden"
+    errorClass: "hidden",
+    win: false
 
   }
 }
-  addCount() {
-    var count = this.state.count
-    this.setState({
-      count: count + 1
-    })
-  }
-
-  resetCount() {
-    this.setState({
-      count: 0
-    })
-  }
-
   handleClick() {
     if(this.state.on === false) {
       this.addPokemon()
@@ -52,18 +40,20 @@ class App extends Component {
   }
 
   addPokemon() {
-    var randomPokemon = this.state.pokemonAudio[Math.floor(Math.random()*this.state.pokemonAudio.length)]
-    var key = Object.keys(randomPokemon)[0]
-    var sound = randomPokemon[key]
-    var arrayvar = this.state.randomSound.slice()
-    var keyValues = this.state.keys.slice()
-    arrayvar.push(sound)
-    keyValues.push(key)
-    this.setState({
-      on: true, name: "on", randomSound: arrayvar, keys: keyValues
-    }, () => {
-      this.randomCry()
-    });
+    if (this.state.win === false) {
+      var randomPokemon = this.state.pokemonAudio[Math.floor(Math.random()*this.state.pokemonAudio.length)]
+      var key = Object.keys(randomPokemon)[0]
+      var sound = randomPokemon[key]
+      var arrayvar = this.state.randomSound.slice()
+      var keyValues = this.state.keys.slice()
+      arrayvar.push(sound)
+      keyValues.push(key)
+      this.setState({
+        on: true, name: "on", randomSound: arrayvar, keys: keyValues
+      }, () => {
+        this.randomCry()
+      });
+    }
   }
 
   addPokemonSelection() {
@@ -79,6 +69,8 @@ class App extends Component {
       this.resetCount()
       this.setState({
         score: score + 1
+      }, () => {
+        this.winnerCheck()
       })
       setTimeout(function(){
         self.addPokemon()
@@ -86,20 +78,20 @@ class App extends Component {
     }
   }
 
+  winnerCheck() {
+    var self = this
+    setTimeout(function() {
+      if(self.state.score === 2) {
+        self.setState({win: true, on: false, name: "off", randomSound: [], score: 0, errorClass: "hidden", keys: []}, () => {alert("YOU WIN!!!")})
+      }
+    }, 1000)
+  }
+
   resetUserSelectionCount() {
     this.setState({
       userSelectionCount: []
     })
   }
-
-
-  // randomCry() {
-  //   let audio = this.state.audio
-  //   let array = this.state.randomSound.map(function(x) {
-  //     audio.src = x
-  //     audio.play()
-  //   })
-  // }
 
   randomCry() {
     var self = this
@@ -156,6 +148,19 @@ class App extends Component {
   removeErrorMessage() {
     this.setState({
       errorClass: "hidden"
+    })
+  }
+
+  addCount() {
+    var count = this.state.count
+    this.setState({
+      count: count + 1
+    })
+  }
+
+  resetCount() {
+    this.setState({
+      count: 0
     })
   }
 
@@ -224,38 +229,6 @@ class Pokeball extends Component {
     count: 0
   }
 }
-
-
-  // addToUserChoices(poke) {
-  //   var choices = this.state.userChoices
-  //   choices.push(poke)
-  //   this.setState({
-  //     userChoices: choices
-  //   })
-  // }
-  //
-  // removeFromUserChoices() {
-  //   var choices = this.state.userChoices
-  //   choices.pop()
-  //   this.setState({
-  //     userChoices: choices
-  //   })
-  // }
-  //
-  // removeAllUserChoices() {
-  //   this.setState({
-  //     userChoices: []
-  //   })
-  // }
-
-  // addCount() {
-  //   var count = this.state.count
-  //   this.setState({
-  //     count: count + 1
-  //   })
-  // }
-
-
   render() {
     return (
       <div className="pokeball">
@@ -292,7 +265,6 @@ class Pokemon extends Component {
   }
 
   handleClick() {
-    // this.props.removeAllUserChoices()
     if(this.props.userChoices < this.props.pokemonOrder && this.props.pokemonOrder[this.props.count] === this.props.name) {
       this.props.removeErrorMessage()
       this.playCry()
@@ -303,36 +275,7 @@ class Pokemon extends Component {
       this.props.addErrorMessage()
       this.playError()
     }
-    // if(this.props.userChoices.length === this.props.pokemonOrder.length) {
-    //   this.playChoice()
-    // }
   }
-
-  // checkChoices(a, b) {
-  //   if(a===b) return true
-  //   if(a=== null || b === null) return false
-  //   if(a.length !== b.length) return false
-  //
-  //   for (var i=0; i<a.length;i++) {
-  //     if (a[i] !== b[i]) return false
-  //   }
-  //   return true
-  // }
-  //
-  // playChoice() {
-  //   var order = this.props.pokemonOrder
-  //   var userChoices = this.props.userChoices
-  //   var self = this
-  //   if(this.checkChoices(order, userChoices)) {
-  //     this.playCry()
-  //     setTimeout(function() {
-  //       self.props.addPokemonSelection()
-  //     }, 2000)
-  //   } else {
-  //     this.playError()
-  //     this.props.removeFromUserChoices()
-  //   }
-  // }
 
   render() {
     return (
