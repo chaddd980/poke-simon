@@ -312,18 +312,18 @@ class Pokemon extends Component {
   handleClick() {
     var self = this
     if(this.state.click && this.props.pokemonOrder[this.props.count] === this.props.name) {
+      this.playCry()
       this.props.removeErrorMessage()
       this.props.removeStrictError()
-      this.playCry()
       this.props.addToUserChoices(this.props.name)
       this.props.addCount()
       this.props.addPokemonSelection()
     } else if(this.state.click && this.props.on && this.props.pokemonOrder[this.props.count] !== this.props.name && this.props.strict === false) {
+      this.playError()
       this.props.addErrorMessage()
       this.props.removeAllUserChoices()
       this.props.resetUserSelectionCount()
       this.props.resetCount()
-      this.playError()
       setTimeout(function() {
         self.props.randomCry()
       }, 1000)
