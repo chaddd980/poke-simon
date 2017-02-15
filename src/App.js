@@ -27,6 +27,7 @@ class App extends Component {
     userSelectionCount: [],
     userChoices: [],
     errorClass: "hidden",
+    strictClass: "hidden",
     win: false,
     current: "current-pokemon"
 
@@ -152,6 +153,18 @@ class App extends Component {
     })
   }
 
+  addStrictError() {
+    this.setState({
+      strictClass: "visible"
+    })
+  }
+
+  removeStrictError() {
+    this.setState({
+      strictClass: "hidden"
+    })
+  }
+
   addCount() {
     var count = this.state.count
     this.setState({
@@ -165,10 +178,36 @@ class App extends Component {
     })
   }
 
+  resetGame() {
+    var self = this
+    self.addStrictError()
+    this.setState({randomSound: [], score: 0, keys: []}, () => {
+      setTimeout(function() {
+        self.addPokemon()
+      }, 1000)
+    })
+  }
+
+  resetGameManual() {
+    var self = this
+    this.setState({randomSound: [], score: 0, keys: []}, () => {
+      setTimeout(function() {
+        self.addPokemon()
+      }, 1000)
+    })
+  }
+
   handleClickStrict() {
-    if(this.state.strict === false) {
+    if(this.state.strict === false && this.state.on === false) {
+      this.handleClick()
       this.setState({strict: true, strictName: "strict on switch"});
-    } else {
+    } else if (this.state.strict && this.state.on) {
+      this.handleClick()
+      this.setState({strict: false, strictName: "notStrict off switch"});
+    } else if (this.state.strict === false && this.state.on) {
+      this.setState({strict: true, strictName: "strict on switch"});
+      this.resetGameManual()
+    } else if (this.state.strict && this.state.on===false) {
       this.setState({strict: false, strictName: "notStrict off switch"});
     }
   }
@@ -177,8 +216,9 @@ class App extends Component {
       <div className="App">
         <Header />
         <Controls name={this.state.name} handleClick={() => this.handleClick()} handleClickStrict={() => this.handleClickStrict()} strict={this.state.strictName} />
+        <div className={this.state.strictClass}>That was not the correct sequence! Start over and try again.</div>
         <div className={this.state.errorClass}>That was not the correct sequence! Relisten and try again.</div>
-        <Pokeball resetUserSelectionCount={this.resetUserSelectionCount.bind(this)} resetCount={this.resetCount.bind(this)} randomCry={this.randomCry.bind(this)} removeErrorMessage={this.removeErrorMessage.bind(this)} addErrorMessage={this.addErrorMessage.bind(this)} removeFromUserChoices={this.removeFromUserChoices.bind(this)} removeAllUserChoices={this.removeAllUserChoices.bind(this)} addToUserChoices={this.addToUserChoices.bind(this)} score={this.state.score} count={this.state.count} addCount={this.addCount.bind(this)} addPokemonSelection={this.addPokemonSelection.bind(this)} pokemonOrder={this.state.keys} on={this.state.on} randomSound={this.state.randomSound}/>
+        <Pokeball resetGame={this.resetGame.bind(this)} strict={this.state.strict} resetUserSelectionCount={this.resetUserSelectionCount.bind(this)} resetCount={this.resetCount.bind(this)} randomCry={this.randomCry.bind(this)} removeStrictError={this.removeStrictError.bind(this)} removeErrorMessage={this.removeErrorMessage.bind(this)} addErrorMessage={this.addErrorMessage.bind(this)} removeFromUserChoices={this.removeFromUserChoices.bind(this)} removeAllUserChoices={this.removeAllUserChoices.bind(this)} addToUserChoices={this.addToUserChoices.bind(this)} score={this.state.score} count={this.state.count} addCount={this.addCount.bind(this)} addPokemonSelection={this.addPokemonSelection.bind(this)} pokemonOrder={this.state.keys} on={this.state.on} randomSound={this.state.randomSound}/>
       </div>
     );
   }
@@ -233,15 +273,15 @@ class Pokeball extends Component {
   render() {
     return (
       <div className="pokeball">
-        <Pokemon resetUserSelectionCount={this.props.resetUserSelectionCount} resetCount={this.props.resetCount} randomCry={this.props.randomCry} removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[0]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798282/007Squirtle_XY_anime_jdl1ze.png" audio={this.state.audio} sound={squirt}  />
+        <Pokemon removeStrictError={this.props.removeStrictError} strict={this.props.strict} resetGame={this.props.resetGame} resetUserSelectionCount={this.props.resetUserSelectionCount} resetCount={this.props.resetCount} randomCry={this.props.randomCry} removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[0]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798282/007Squirtle_XY_anime_jdl1ze.png" audio={this.state.audio} sound={squirt}  />
         <div className="filler"></div>
         <div className="middle-pokemon">
-          <Pokemon resetUserSelectionCount={this.props.resetUserSelectionCount} resetCount={this.props.resetCount} randomCry={this.props.randomCry} removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[3]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798266/001Bulbasaur_Dream_rsskjs.png" audio={this.state.audio} sound={bulb} />
+          <Pokemon removeStrictError={this.props.removeStrictError} strict={this.props.strict} resetGame={this.props.resetGame} resetUserSelectionCount={this.props.resetUserSelectionCount} resetCount={this.props.resetCount} randomCry={this.props.randomCry} removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[3]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798266/001Bulbasaur_Dream_rsskjs.png" audio={this.state.audio} sound={bulb} />
           <div className="count">{this.props.score}</div>
-          <Pokemon resetUserSelectionCount={this.props.resetUserSelectionCount} resetCount={this.props.resetCount} randomCry={this.props.randomCry} removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[1]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798273/004Charmander_OS_anime_rotmth.png" audio={this.state.audio} sound={char} />
+          <Pokemon removeStrictError={this.props.removeStrictError} strict={this.props.strict} resetGame={this.props.resetGame} resetUserSelectionCount={this.props.resetUserSelectionCount} resetCount={this.props.resetCount} randomCry={this.props.randomCry} removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[1]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798273/004Charmander_OS_anime_rotmth.png" audio={this.state.audio} sound={char} />
         </div>
         <div className="filler"></div>
-        <Pokemon resetUserSelectionCount={this.props.resetUserSelectionCount} resetCount={this.props.resetCount} randomCry={this.props.randomCry} removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[2]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798367/025Pikachu_XY_anime_3_zvg897.png" audio={this.state.audio} sound={pika} />
+        <Pokemon removeStrictError={this.props.removeStrictError} strict={this.props.strict} resetGame={this.props.resetGame} resetUserSelectionCount={this.props.resetUserSelectionCount} resetCount={this.props.resetCount} randomCry={this.props.randomCry} removeErrorMessage={this.props.removeErrorMessage} addErrorMessage={this.props.addErrorMessage} addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[2]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798367/025Pikachu_XY_anime_3_zvg897.png" audio={this.state.audio} sound={pika} />
       </div>
     )
   }
@@ -269,11 +309,12 @@ class Pokemon extends Component {
     var self = this
     if(this.props.pokemonOrder[this.props.count] === this.props.name) {
       this.props.removeErrorMessage()
+      this.props.removeStrictError()
       this.playCry()
       this.props.addToUserChoices(this.props.name)
       this.props.addCount()
       this.props.addPokemonSelection()
-    } else if(this.props.pokemonOrder[this.props.count] !== this.props.name) {
+    } else if(this.props.pokemonOrder[this.props.count] !== this.props.name && this.props.strict === false) {
       this.props.addErrorMessage()
       this.props.removeAllUserChoices()
       this.props.resetUserSelectionCount()
@@ -282,6 +323,10 @@ class Pokemon extends Component {
       setTimeout(function() {
         self.props.randomCry()
       }, 1000)
+    }
+    else if (this.props.pokemonOrder[this.props.count] !== this.props.name && this.props.strict === true) {
+      this.playError()
+      this.props.resetGame()
     }
   }
 
