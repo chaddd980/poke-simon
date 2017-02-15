@@ -10,6 +10,7 @@ class App extends Component {
   super(props)
   this.state = {
     on: false,
+    score: 0,
     name: "off",
     count: 0,
     strict: false,
@@ -21,29 +22,72 @@ class App extends Component {
     keys: [],
     previousCry: false,
     soundOn: false,
-    soundCount: 0
+    soundCount: 0,
+    userSelectionCount: [],
+    userChoices: []
 
   }
 }
+  addCount() {
+    var count = this.state.count
+    this.setState({
+      count: count + 1
+    })
+  }
 
+  resetCount() {
+    this.setState({
+      count: 0
+    })
+  }
 
   handleClick() {
     if(this.state.on === false) {
-      var randomPokemon = this.state.pokemonAudio[Math.floor(Math.random()*this.state.pokemonAudio.length)]
-      var key = Object.keys(randomPokemon)[0]
-      var sound = randomPokemon[key]
-      var arrayvar = this.state.randomSound.slice()
-      var keyValues = this.state.keys.slice()
-      arrayvar.push(sound)
-      keyValues.push(key)
-      this.setState({
-        on: true, name: "on", randomSound: arrayvar, keys: keyValues
-      }, () => {
-        this.randomCry()
-      });
+      this.addPokemon()
     } else {
-      this.setState({on: false, name: "off"});
+      this.setState({on: false, name: "off", randomSound: [], score: 0});
     }
+  }
+
+  addPokemon() {
+    var randomPokemon = this.state.pokemonAudio[Math.floor(Math.random()*this.state.pokemonAudio.length)]
+    var key = Object.keys(randomPokemon)[0]
+    var sound = randomPokemon[key]
+    var arrayvar = this.state.randomSound.slice()
+    var keyValues = this.state.keys.slice()
+    arrayvar.push(sound)
+    keyValues.push(key)
+    this.setState({
+      on: true, name: "on", randomSound: arrayvar, keys: keyValues
+    }, () => {
+      this.randomCry()
+    });
+  }
+
+  addPokemonSelection() {
+    var self = this
+    var score = this.state.score
+    var userSelectionCount = this.state.userSelectionCount
+    userSelectionCount.push("pokemon")
+    this.setState({
+      userSelectionCount: userSelectionCount
+    })
+    if(this.state.userSelectionCount.length === this.state.randomSound.length) {
+      this.resetUserSelectionCount()
+      this.resetCount()
+      this.setState({
+        score: score + 1
+      })
+      setTimeout(function(){
+        self.addPokemon()
+      }, 2000)
+    }
+  }
+
+  resetUserSelectionCount() {
+    this.setState({
+      userSelectionCount: []
+    })
   }
 
 
@@ -61,7 +105,7 @@ class App extends Component {
       if (this.state.soundOn) {
         setTimeout(function() {
           self.cry(i)
-        }, 1500*i)
+        }, 1300*i)
       } else {
         this.cry(i)
         this.setState({
@@ -79,6 +123,28 @@ class App extends Component {
     audio.play()
   }
 
+  addToUserChoices(poke) {
+    var choices = this.state.userChoices
+    choices.push(poke)
+    this.setState({
+      userChoices: choices
+    })
+  }
+
+  removeFromUserChoices() {
+    var choices = this.state.userChoices
+    choices.pop()
+    this.setState({
+      userChoices: choices
+    })
+  }
+
+  removeAllUserChoices() {
+    this.setState({
+      userChoices: []
+    })
+  }
+
   handleClickStrict() {
     if(this.state.strict === false) {
       this.setState({strict: true, strictName: "strict on switch"});
@@ -91,7 +157,7 @@ class App extends Component {
       <div className="App">
         <Header />
         <Controls name={this.state.name} handleClick={() => this.handleClick()} handleClickStrict={() => this.handleClickStrict()} strict={this.state.strictName} />
-        <Pokeball on={this.state.on} randomSound={this.state.randomSound} count={this.state.count}/>
+        <Pokeball removeFromUserChoices={this.removeFromUserChoices.bind(this)} removeAllUserChoices={this.removeAllUserChoices.bind(this)} addToUserChoices={this.addToUserChoices.bind(this)} score={this.state.score} count={this.state.count} addCount={this.addCount.bind(this)} addPokemonSelection={this.addPokemonSelection.bind(this)} pokemonOrder={this.state.keys} on={this.state.on} randomSound={this.state.randomSound}/>
       </div>
     );
   }
@@ -139,21 +205,54 @@ class Pokeball extends Component {
     current: "",
     pokemon: ["squirt", "char", "pika", "bulb"],
     audio: new Audio(),
+    userChoices: [],
+    count: 0
   }
 }
+
+
+  // addToUserChoices(poke) {
+  //   var choices = this.state.userChoices
+  //   choices.push(poke)
+  //   this.setState({
+  //     userChoices: choices
+  //   })
+  // }
+  //
+  // removeFromUserChoices() {
+  //   var choices = this.state.userChoices
+  //   choices.pop()
+  //   this.setState({
+  //     userChoices: choices
+  //   })
+  // }
+  //
+  // removeAllUserChoices() {
+  //   this.setState({
+  //     userChoices: []
+  //   })
+  // }
+
+  // addCount() {
+  //   var count = this.state.count
+  //   this.setState({
+  //     count: count + 1
+  //   })
+  // }
+
 
   render() {
     return (
       <div className="pokeball">
-        <Pokemon name={this.state.pokemon[0]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798282/007Squirtle_XY_anime_jdl1ze.png" audio={this.state.audio} sound={squirt}  />
+        <Pokemon addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[0]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798282/007Squirtle_XY_anime_jdl1ze.png" audio={this.state.audio} sound={squirt}  />
         <div className="filler"></div>
         <div className="middle-pokemon">
-          <Pokemon name={this.state.pokemon[3]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798266/001Bulbasaur_Dream_rsskjs.png" audio={this.state.audio} sound={bulb} />
-          <div className="count">{this.props.count}</div>
-          <Pokemon name={this.state.pokemon[1]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798273/004Charmander_OS_anime_rotmth.png" audio={this.state.audio} sound={char} />
+          <Pokemon addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[3]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798266/001Bulbasaur_Dream_rsskjs.png" audio={this.state.audio} sound={bulb} />
+          <div className="count">{this.props.score}</div>
+          <Pokemon addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[1]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798273/004Charmander_OS_anime_rotmth.png" audio={this.state.audio} sound={char} />
         </div>
         <div className="filler"></div>
-        <Pokemon name={this.state.pokemon[2]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798367/025Pikachu_XY_anime_3_zvg897.png" audio={this.state.audio} sound={pika} />
+        <Pokemon addCount={this.props.addCount} count={this.props.count} removeAllUserChoices={this.props.removeAllUserChoices} removeFromUserChoices={this.props.removeFromUserChoices} addToUserChoices={this.props.addToUserChoices} userChoices={this.state.userChoices} addPokemonSelection={this.props.addPokemonSelection} pokemonOrder={this.props.pokemonOrder} name={this.state.pokemon[2]} current={this.state.current} pokemon="http://res.cloudinary.com/dk5ge9sgn/image/upload/v1486798367/025Pikachu_XY_anime_3_zvg897.png" audio={this.state.audio} sound={pika} />
       </div>
     )
   }
@@ -172,10 +271,56 @@ class Pokemon extends Component {
     this.props.audio.play()
   }
 
+  playError() {
+    this.props.audio.src = this.props.sound
+    this.props.audio.play()
+  }
+
+  handleClick() {
+    // this.props.removeAllUserChoices()
+    if(this.props.userChoices < this.props.pokemonOrder && this.props.pokemonOrder[this.props.count] === this.props.name) {
+      this.playCry()
+      this.props.addToUserChoices(this.props.name)
+      this.props.addCount()
+      this.props.addPokemonSelection()
+    } else if(this.props.userChoices < this.props.pokemonOrder && this.props.pokemonOrder[this.props.count] !== this.props.name) {
+      this.playError()
+    }
+    // if(this.props.userChoices.length === this.props.pokemonOrder.length) {
+    //   this.playChoice()
+    // }
+  }
+
+  // checkChoices(a, b) {
+  //   if(a===b) return true
+  //   if(a=== null || b === null) return false
+  //   if(a.length !== b.length) return false
+  //
+  //   for (var i=0; i<a.length;i++) {
+  //     if (a[i] !== b[i]) return false
+  //   }
+  //   return true
+  // }
+  //
+  // playChoice() {
+  //   var order = this.props.pokemonOrder
+  //   var userChoices = this.props.userChoices
+  //   var self = this
+  //   if(this.checkChoices(order, userChoices)) {
+  //     this.playCry()
+  //     setTimeout(function() {
+  //       self.props.addPokemonSelection()
+  //     }, 2000)
+  //   } else {
+  //     this.playError()
+  //     this.props.removeFromUserChoices()
+  //   }
+  // }
+
   render() {
     return (
       <div className={this.state.class}>
-        <div onClick={() => this.playCry()}><img className="pic" src={this.props.pokemon} alt="pic of pokemon"/></div>
+        <div onClick={() => this.handleClick()}><img className="pic" src={this.props.pokemon} alt="pic of pokemon"/></div>
       </div>
     )
   }
