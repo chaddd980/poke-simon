@@ -5,6 +5,9 @@ $poke-height: 7vw;
 $count-color: white;
 $count-size: 4vw;
 $on-background: red;
+$leftPadding: 1.6vw;
+$TopPadding: 1.8vw;
+
 
 .pic {
   height: $poke-height;
@@ -57,6 +60,10 @@ $on-background: red;
   .pic {
     height: $poke-height + 5;
     width: $poke-height + 5;
+  }
+  .count {
+    padding-left: $leftPadding + 0.8;
+    padding-top: $TopPadding + 0.8;
   }
 }
 
