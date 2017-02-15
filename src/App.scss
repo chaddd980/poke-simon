@@ -1,6 +1,6 @@
 $header-margin: 1vw;
-$back-color: blue;
-$height: 45vw;
+$back-color: lightgreen;
+$height: 35vw;
 $poke-height: 7vw;
 $count-color: white;
 $count-size: 4vw;
@@ -15,6 +15,9 @@ $TopPadding: 1.8vw;
 }
 
 .App {
+  font-family: 'Chewy', cursive;  
+  background-image: url("http://res.cloudinary.com/dk5ge9sgn/image/upload/v1487166112/pokemon-background_xjjgtc.jpg");
+  background-size: cover;
   display: flex;
   min-height: 100%;
   width: 100%;
@@ -31,14 +34,13 @@ $TopPadding: 1.8vw;
   display: flex;
   align-self: center;
   color: $count-color;
-  padding-left: 1.6vw;
-  padding-top: 1.8vw;
   font-weight: bold;
   font-size: $count-size;
 }
 
 .pokeball {
-  background-image: url('http://thecraftchop.com/files/others/Pokeball.svg');
+  background-image: url('http://res.cloudinary.com/dk5ge9sgn/image/upload/v1487166489/Pokeball_fbsjti.jpg');
+  font-family: sans-serif;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -61,10 +63,6 @@ $TopPadding: 1.8vw;
     height: $poke-height + 5;
     width: $poke-height + 5;
   }
-  .count {
-    padding-left: $leftPadding + 0.8;
-    padding-top: $TopPadding + 0.8;
-  }
 }
 
 .hidden {
@@ -74,6 +72,8 @@ $TopPadding: 1.8vw;
 
 .error {
   text-align: center;
+  font-size: 20px;
+  color: red
 }
 
 .pokemon {

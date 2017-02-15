@@ -37,6 +37,8 @@ class App extends Component {
     if(this.state.on === false) {
       this.addPokemon()
     } else {
+      this.removeStrictError()
+      this.removeErrorMessage()
       this.setState({on: false, name: "off", randomSound: [], score: 0, errorClass: "hidden", keys: []});
     }
   }
