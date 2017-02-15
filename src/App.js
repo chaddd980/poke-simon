@@ -220,7 +220,7 @@ class App extends Component {
         <Controls name={this.state.name} handleClick={() => this.handleClick()} handleClickStrict={() => this.handleClickStrict()} strict={this.state.strictName} />
         <div className={this.state.strictClass}>That was not the correct sequence! Start over and try again.</div>
         <div className={this.state.errorClass}>That was not the correct sequence! Relisten and try again.</div>
-        <Pokeball on={this.state.on} resetGame={this.resetGame.bind(this)} strict={this.state.strict} resetUserSelectionCount={this.resetUserSelectionCount.bind(this)} resetCount={this.resetCount.bind(this)} randomCry={this.randomCry.bind(this)} removeStrictError={this.removeStrictError.bind(this)} removeErrorMessage={this.removeErrorMessage.bind(this)} addErrorMessage={this.addErrorMessage.bind(this)} removeFromUserChoices={this.removeFromUserChoices.bind(this)} removeAllUserChoices={this.removeAllUserChoices.bind(this)} addToUserChoices={this.addToUserChoices.bind(this)} score={this.state.score} count={this.state.count} addCount={this.addCount.bind(this)} addPokemonSelection={this.addPokemonSelection.bind(this)} pokemonOrder={this.state.keys} on={this.state.on} randomSound={this.state.randomSound}/>
+        <Pokeball resetGame={this.resetGame.bind(this)} strict={this.state.strict} resetUserSelectionCount={this.resetUserSelectionCount.bind(this)} resetCount={this.resetCount.bind(this)} randomCry={this.randomCry.bind(this)} removeStrictError={this.removeStrictError.bind(this)} removeErrorMessage={this.removeErrorMessage.bind(this)} addErrorMessage={this.addErrorMessage.bind(this)} removeFromUserChoices={this.removeFromUserChoices.bind(this)} removeAllUserChoices={this.removeAllUserChoices.bind(this)} addToUserChoices={this.addToUserChoices.bind(this)} score={this.state.score} count={this.state.count} addCount={this.addCount.bind(this)} addPokemonSelection={this.addPokemonSelection.bind(this)} pokemonOrder={this.state.keys} on={this.state.on} randomSound={this.state.randomSound}/>
       </div>
     );
   }
@@ -294,6 +294,7 @@ class Pokemon extends Component {
   super(props)
   this.state = {
     class: this.props.name + " pokemon " + this.props.current,
+    click: true
   }
 }
 
@@ -307,16 +308,17 @@ class Pokemon extends Component {
     this.props.audio.play()
   }
 
+
   handleClick() {
     var self = this
-    if(this.props.pokemonOrder[this.props.count] === this.props.name) {
+    if(this.state.click && this.props.pokemonOrder[this.props.count] === this.props.name) {
       this.props.removeErrorMessage()
       this.props.removeStrictError()
       this.playCry()
       this.props.addToUserChoices(this.props.name)
       this.props.addCount()
       this.props.addPokemonSelection()
-    } else if(this.props.on && this.props.pokemonOrder[this.props.count] !== this.props.name && this.props.strict === false) {
+    } else if(this.state.click && this.props.on && this.props.pokemonOrder[this.props.count] !== this.props.name && this.props.strict === false) {
       this.props.addErrorMessage()
       this.props.removeAllUserChoices()
       this.props.resetUserSelectionCount()
@@ -326,7 +328,7 @@ class Pokemon extends Component {
         self.props.randomCry()
       }, 1000)
     }
-    else if (this.props.pokemonOrder[this.props.count] !== this.props.name && this.props.strict === true) {
+    else if (this.state.click && this.props.pokemonOrder[this.props.count] !== this.props.name && this.props.strict === true) {
       this.playError()
       this.props.resetGame()
     }
