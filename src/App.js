@@ -39,7 +39,7 @@ class App extends Component {
     } else {
       this.removeStrictError()
       this.removeErrorMessage()
-      this.setState({on: false, name: "off", randomSound: [], score: 0, errorClass: "hidden", keys: []});
+      this.setState({on: false, userChoices: [], name: "off", randomSound: [], score: 0, errorClass: "hidden", keys: []});
     }
   }
 
@@ -103,7 +103,7 @@ class App extends Component {
       if (this.state.soundOn) {
         setTimeout(function() {
           self.cry(i)
-        }, 1000 + (1000*i))
+        }, 1300*i)
       } else {
         this.cry(i)
         this.setState({
@@ -330,6 +330,9 @@ class Pokemon extends Component {
     }
     else if (this.state.click && this.props.pokemonOrder[this.props.count] !== this.props.name && this.props.strict === true) {
       this.playError()
+      this.props.removeAllUserChoices()
+      this.props.resetUserSelectionCount()
+      this.props.resetCount()
       this.props.resetGame()
     }
   }
